@@ -2,6 +2,7 @@ import { useState } from "react";
 import { ChevronUp, ChevronDown } from "lucide-react";
 import { ResidentRecord } from "../../types";
 import { GRADE_COLORS } from "../../utils/colors";
+import { getResidentPhotoUrl } from "../../utils/photoMatch";
 
 interface PersonTableProps {
   data: ResidentRecord[];
@@ -84,6 +85,9 @@ export function PersonTable({
                   年度
                 </th>
               )}
+              <th className="px-2 py-3 text-left font-medium text-gray-600 w-12">
+                写真
+              </th>
               {columns.map((col) => (
                 <th
                   key={col.key}
@@ -119,6 +123,19 @@ export function PersonTable({
                 {showYear && (
                   <td className="px-4 py-3 text-gray-600">{person.年度}</td>
                 )}
+                <td className="px-2 py-3">
+                  {getResidentPhotoUrl(person.名前) ? (
+                    <img
+                      src={getResidentPhotoUrl(person.名前)}
+                      alt={person.名前}
+                      className="w-8 h-8 rounded-full object-cover"
+                    />
+                  ) : (
+                    <div className="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center text-gray-400 text-[10px]">
+                      -
+                    </div>
+                  )}
+                </td>
                 <td className="px-4 py-3">
                   <div>
                     <span className="font-medium text-gray-800">

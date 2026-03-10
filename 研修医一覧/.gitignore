@@ -1,0 +1,3 @@
+# 写真ファイルは容量が大きいため除外（build:photosで生成するresidentPhotos.jsonを使用）
+pictures/*
+!pictures/.gitkeep

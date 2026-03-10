@@ -10,6 +10,8 @@ lerna-debug.log*
 node_modules
 dist
 dist-ssr
+# 生成ファイル（npm run build:photos で生成、写真追加時は再実行）
+src/data/residentPhotos.json
 *.local
 
 # Editor directories and files

@@ -61,7 +61,7 @@ export function GradeSection({
                   🏥 {dept}
                   <span className="opacity-80">({deptPersons.length}名)</span>
                 </div>
-                <div className="grid gap-3" style={{ gridTemplateColumns: "repeat(auto-fill, minmax(193px, 1fr))" }}>
+                <div className="grid gap-3" style={{ gridTemplateColumns: "repeat(auto-fill, minmax(240px, 1fr))" }}>
                   {deptPersons.map((person, idx) => (
                     <PersonCard
                       key={`${person.名前}-${person.年度}-${idx}`}
@@ -95,7 +95,7 @@ export function GradeSection({
         <span className="text-gray-500 text-sm">({persons.length}名)</span>
       </div>
 
-      <div className="grid gap-3" style={{ gridTemplateColumns: "repeat(auto-fill, minmax(193px, 1fr))" }}>
+      <div className="grid gap-3" style={{ gridTemplateColumns: "repeat(auto-fill, minmax(240px, 1fr))" }}>
         {persons.map((person, idx) => (
           <PersonCard
             key={`${person.名前}-${person.年度}-${idx}`}

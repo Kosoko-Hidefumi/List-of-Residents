@@ -1,6 +1,7 @@
 import { X, User, Mail, Phone, MapPin, GraduationCap, Building2 } from "lucide-react";
 import { ResidentRecord } from "../../types";
 import { GRADE_COLORS, getDeptColor } from "../../utils/colors";
+import { getResidentPhotoUrl } from "../../utils/photoMatch";
 
 interface PersonModalProps {
   person: ResidentRecord;
@@ -10,6 +11,7 @@ interface PersonModalProps {
 export function PersonModal({ person, onClose }: PersonModalProps) {
   const gradeColor = GRADE_COLORS[person.学年] || "#64748B";
   const deptColor = getDeptColor(person.専門科正規化 || "");
+  const photoUrl = getResidentPhotoUrl(person.名前);
 
   const handleOverlayClick = (e: React.MouseEvent) => {
     if (e.target === e.currentTarget) {
@@ -62,10 +64,25 @@ export function PersonModal({ person, onClose }: PersonModalProps) {
         </div>
 
         <div className="p-6">
-          <h2 className="text-2xl font-bold text-gray-800 mb-1">
-            {person.名前}
-          </h2>
-          <p className="text-gray-500 mb-6">{person.ふりがな}</p>
+          <div className="flex items-start gap-4 mb-6">
+            {photoUrl ? (
+              <img
+                src={photoUrl}
+                alt={person.名前}
+                className="w-20 h-20 rounded-full object-cover flex-shrink-0"
+              />
+            ) : (
+              <div className="w-20 h-20 rounded-full bg-gray-200 flex items-center justify-center flex-shrink-0 text-gray-400 text-sm">
+                写真
+              </div>
+            )}
+            <div>
+              <h2 className="text-2xl font-bold text-gray-800 mb-1">
+                {person.名前}
+              </h2>
+              <p className="text-gray-500">{person.ふりがな}</p>
+            </div>
+          </div>
 
           <div className="grid grid-cols-2 gap-4">
             {fields.map((field) => (
