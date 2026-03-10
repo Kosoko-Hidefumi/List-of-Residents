@@ -47,15 +47,9 @@ export function PersonCard({ person, onClick, showYear }: PersonCardProps) {
               {person.専門科}
             </span>
           )}
-          {person.性別 && (
-            <span
-              className={`px-2 py-0.5 text-xs rounded ${
-                person.性別 === "男"
-                  ? "bg-blue-100 text-blue-700"
-                  : "bg-pink-100 text-pink-700"
-              }`}
-            >
-              {person.性別 === "男" ? "♂" : "♀"}
+          {person["初・後"] && (
+            <span className="px-2 py-0.5 text-xs bg-gray-100 text-gray-600 rounded">
+              {person["初・後"]}
             </span>
           )}
           {person.出身大学 && (
