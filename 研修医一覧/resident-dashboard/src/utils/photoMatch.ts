@@ -5,6 +5,17 @@
 
 import residentPhotos from "../data/residentPhotos.json";
 
+let fullMapPromise: Promise<Record<string, string>> | null = null;
+
+function loadFullPhotoMap(): Promise<Record<string, string>> {
+  if (!fullMapPromise) {
+    fullMapPromise = import("../data/residentPhotosFull.json")
+      .then((m) => (m as { default: Record<string, string> }).default)
+      .catch(() => ({}));
+  }
+  return fullMapPromise;
+}
+
 /**
  * 名前を正規化して検索用候補配列を生成
  * 例: "稲村　直紀" → ["稲村直紀", "稲村　直紀", "直紀稲村", "直紀　稲村"]
@@ -44,6 +55,21 @@ export function getResidentPhotoUrl(name: string): string | undefined {
   const candidates = normalizeForPhotoMatch(name);
   for (const key of candidates) {
     const url = (residentPhotos as Record<string, string>)[key];
+    if (url) return url;
+  }
+  return undefined;
+}
+
+/**
+ * 詳細表示用（高解像度）。初回は JSON チャンクを遅延読み込み。
+ */
+export async function getResidentPhotoUrlFull(
+  name: string
+): Promise<string | undefined> {
+  const map = await loadFullPhotoMap();
+  const candidates = normalizeForPhotoMatch(name);
+  for (const key of candidates) {
+    const url = map[key];
     if (url) return url;
   }
   return undefined;

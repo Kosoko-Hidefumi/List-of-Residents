@@ -1,7 +1,8 @@
+import { useEffect, useState } from "react";
 import { X, User, Mail, Phone, MapPin, GraduationCap, Building2 } from "lucide-react";
 import { ResidentRecord } from "../../types";
 import { GRADE_COLORS, getDeptColor } from "../../utils/colors";
-import { getResidentPhotoUrl } from "../../utils/photoMatch";
+import { getResidentPhotoUrl, getResidentPhotoUrlFull } from "../../utils/photoMatch";
 
 interface PersonModalProps {
   person: ResidentRecord;
@@ -11,7 +12,20 @@ interface PersonModalProps {
 export function PersonModal({ person, onClose }: PersonModalProps) {
   const gradeColor = GRADE_COLORS[person.学年] || "#64748B";
   const deptColor = getDeptColor(person.専門科正規化 || "");
-  const photoUrl = getResidentPhotoUrl(person.名前);
+  const thumbUrl = getResidentPhotoUrl(person.名前);
+  const [photoUrl, setPhotoUrl] = useState<string | undefined>(thumbUrl);
+
+  useEffect(() => {
+    const nextThumb = getResidentPhotoUrl(person.名前);
+    setPhotoUrl(nextThumb);
+    let cancelled = false;
+    getResidentPhotoUrlFull(person.名前).then((full) => {
+      if (!cancelled && full) setPhotoUrl(full);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [person.名前]);
 
   const handleOverlayClick = (e: React.MouseEvent) => {
     if (e.target === e.currentTarget) {
@@ -64,19 +78,19 @@ export function PersonModal({ person, onClose }: PersonModalProps) {
         </div>
 
         <div className="p-6">
-          <div className="flex items-start gap-4 mb-6">
+          <div className="flex flex-col sm:flex-row sm:items-start gap-4 mb-6">
             {photoUrl ? (
               <img
                 src={photoUrl}
                 alt={person.名前}
-                className="w-20 h-20 rounded-full object-cover flex-shrink-0"
+                className="w-44 h-44 sm:w-52 sm:h-52 rounded-xl object-cover flex-shrink-0 mx-auto sm:mx-0 shadow-md"
               />
             ) : (
-              <div className="w-20 h-20 rounded-full bg-gray-200 flex items-center justify-center flex-shrink-0 text-gray-400 text-sm">
+              <div className="w-44 h-44 sm:w-52 sm:h-52 rounded-xl bg-gray-200 flex items-center justify-center flex-shrink-0 mx-auto sm:mx-0 text-gray-400 text-sm">
                 写真
               </div>
             )}
-            <div>
+            <div className="text-center sm:text-left min-w-0 flex-1">
               <h2 className="text-2xl font-bold text-gray-800 mb-1">
                 {person.名前}
               </h2>
