@@ -2,12 +2,21 @@ import { useState, useCallback } from "react";
 import * as XLSX from "xlsx";
 import { ResidentRecord } from "../types";
 import { normalizeDept } from "../utils/normalizeDept";
+import {
+  loadResidentCache,
+  saveResidentCache,
+  clearResidentCache,
+} from "../utils/residentCache";
 
 export function useExcelParser() {
-  const [data, setData] = useState<ResidentRecord[]>([]);
+  const [data, setData] = useState<ResidentRecord[]>(
+    () => loadResidentCache()?.data ?? []
+  );
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [fileName, setFileName] = useState<string>("");
+  const [fileName, setFileName] = useState(
+    () => loadResidentCache()?.fileName ?? ""
+  );
 
   const parseFile = useCallback((file: File) => {
     setIsLoading(true);
@@ -46,6 +55,7 @@ export function useExcelParser() {
             専門科正規化: normalizeDept(String(r["専門科"] ?? "")),
           }));
         setData(parsed);
+        saveResidentCache(file.name, parsed);
       } catch {
         setError("Excelファイルの読み込みに失敗しました。形式を確認してください。");
       } finally {
@@ -56,6 +66,7 @@ export function useExcelParser() {
   }, []);
 
   const resetData = useCallback(() => {
+    clearResidentCache();
     setData([]);
     setFileName("");
     setError(null);
