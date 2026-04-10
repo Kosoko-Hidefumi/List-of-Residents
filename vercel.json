@@ -1,0 +1,5 @@
+{
+  "installCommand": "npm install --prefix \"研修医一覧/resident-dashboard\"",
+  "buildCommand": "npm run build --prefix \"研修医一覧/resident-dashboard\"",
+  "outputDirectory": "研修医一覧/resident-dashboard/dist"
+}
