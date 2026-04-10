@@ -1,0 +1,8 @@
+# OS / エディタ
+.DS_Store
+._*
+
+# サムネ・機器キャッシュ（本体の .jpg のみ追跡）
+**/.thumbnail/
+**/.webview/
+.webaxs_*
